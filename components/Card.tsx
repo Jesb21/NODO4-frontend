@@ -1,58 +1,86 @@
-import Button from "@/components/Button";
+import React from 'react';
+
+interface CardField {
+  label: string;
+  value: string | React.ReactNode;
+  badge?: boolean;
+}
 
 interface CardProps {
+  avatar: string;
   name: string;
   email: string;
-  children: React.ReactNode;
-  phone?: string;
-  role?: string;
-  state?: string;
-  createdAt?: string;
-  dni?: string;
-  age?: number;
-  registerDate?: string;
+  variant?: 'compact' | 'detailed';
+  fields?: CardField[];
+  actions?: React.ReactNode;
+  menuIcon?: React.ReactNode;
+  topRightContent?: React.ReactNode;
 }
 
-export default function Card({
+const Card: React.FC<CardProps> = ({
+  avatar,
   name,
   email,
-  phone,
-  role,
-  state,
-  createdAt,
-  dni,
-  age,
-  registerDate,
-}: CardProps) {
+  variant = 'compact',
+  fields = [],
+  actions,
+  menuIcon,
+  topRightContent,
+}) => {
   return (
-    <div className="bg-white shadow rounded-lg p-4 w-80">
-      {/* Header con avatar e info básica */}
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 flex items-center justify-center rounded-full bg-purple-600 text-white font-bold">
-          {name ? name.substring(0, 2) : "??"}
+    <div className="bg-white rounded-3xl p-6 shadow-md border border-gray-100">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-14 h-14 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-xl">
+            {avatar}
+          </div>
+          <div>
+            <h3 className="font-bold text-gray-900 text-lg">{name}</h3>
+            <p className="text-gray-500 text-sm">{email}</p>
+          </div>
         </div>
+        <div className="flex items-center gap-2">
+          {topRightContent}
+          {menuIcon && (
+            <button className="text-gray-800 hover:text-gray-900">
+              {menuIcon}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Fields */}
+      {variant === 'compact' ? (
+        <div className="space-y-2">
+          {fields.map((field, index) => (
+            <div key={index} className="flex items-center justify-between py-1">
+              <span className="text-gray-900 text-sm font-normal">{field.label}</span>
+              {field.badge ? (
+                <span className="bg-gray-500 text-white text-xs px-3 py-1 rounded-md font-medium">
+                  data
+                </span>
+              ) : (
+                <span className="text-gray-900 text-sm">{field.value}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
         <div>
-          <h2 className="text-lg font-semibold">{name}</h2>
-          <p className="text-sm text-gray-500">{email}</p>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4 mb-5">
+            {fields.map((field, index) => (
+              <div key={index}>
+                <p className="text-gray-400 text-sm mb-1">{field.label}</p>
+                <p className="text-gray-900 text-base">{field.value}</p>
+              </div>
+            ))}
+          </div>
+          {actions && <div className="flex gap-3">{actions}</div>}
         </div>
-      </div>
-
-      {/* Información adicional */}
-      <div className="mt-4 space-y-1 text-sm text-gray-700">
-        {role && <p><span className="font-medium">Role:</span> {role}</p>}
-        {phone && <p><span className="font-medium">Phone:</span> {phone}</p>}
-        {state && <p><span className="font-medium">State:</span> {state}</p>}
-        {createdAt && <p><span className="font-medium">Created at:</span> {createdAt}</p>}
-        {dni && <p><span className="font-medium">DNI:</span> {dni}</p>}
-        {age && <p><span className="font-medium">Age:</span> {age} años</p>}
-        {registerDate && <p><span className="font-medium">Register:</span> {registerDate}</p>}
-      </div>
-
-      {/* Acciones */}
-      <div className="mt-4 flex gap-2">
-        <Button variant="secondary">View</Button>
-        <Button variant="primary">Action</Button>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+export default Card;

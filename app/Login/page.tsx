@@ -28,7 +28,7 @@ export default function LoginPage() {
       {/* Lado izquierdo: imagen o branding */}
       <div className="hidden md:flex w-1/2 bg-gray-100 items-center justify-center">
         <Image
-          src="/loginimg.png"
+          src="/loginPage/loginimg.png"
           alt="Hotel room"
           fill // hace que ocupe todo el contenedor
           className="object-cover"
