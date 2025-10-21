@@ -3,6 +3,7 @@ import Button from "@/components/Button";
 interface CardProps {
   name: string;
   email: string;
+  children: React.ReactNode;
   phone?: string;
   role?: string;
   state?: string;
